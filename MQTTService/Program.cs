@@ -34,40 +34,40 @@ namespace MQTTService
                                                                .WithClientOptions(mqttClientOptions.Build())
                                                                .Build();
 
-			var client = new MqttFactory().CreateManagedMqttClient();
+            var client = new MqttFactory().CreateManagedMqttClient();
 
-			client.ApplicationMessageReceived += Client_ApplicationMessageReceived;
-			client.ConnectingFailed += Client_ConnectingFailed;
+            client.ApplicationMessageReceived += Client_ApplicationMessageReceived;
+            client.ConnectingFailed += Client_ConnectingFailed;
 
             foreach (var topic in Configuration.Topics)
             {
                 await client.SubscribeAsync(new TopicFilterBuilder().WithTopic(topic).Build());
             }
 
-			await client.StartAsync(options);
-			Console.ReadLine();
+            await client.StartAsync(options);
+            Console.ReadLine();
         }
 
-		private static void Client_ConnectingFailed(object sender, MqttManagedProcessFailedEventArgs e)
-		{
-			Console.WriteLine(e.Exception);
-		}
+        private static void Client_ConnectingFailed(object sender, MqttManagedProcessFailedEventArgs e)
+        {
+            Console.WriteLine(e.Exception);
+        }
 
-		private static void Client_ApplicationMessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
-		{
+        private static void Client_ApplicationMessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+        {
             var payload = Encoding.Default.GetString(e.ApplicationMessage.Payload);
 
             var action = MqttAction.GetAction(payload);
 
             if (action != null)
             {
-				Process.Start(new ProcessStartInfo(action.Process, action.Arguments)
-				{
-					CreateNoWindow = true,
-					UseShellExecute = false
-				});
+                Process.Start(new ProcessStartInfo(action.Process, action.Arguments)
+                {
+                    CreateNoWindow = true,
+                    UseShellExecute = false
+                });
 
             }
-		}
+        }
     }
 }
