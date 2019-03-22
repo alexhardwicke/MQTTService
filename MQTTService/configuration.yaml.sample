@@ -1,0 +1,9 @@
+client-id: name-here
+server: someurl.here
+port: 1883
+username: my_username
+password: my_password
+reconnect-delay: 5.0
+use-ssl: yes
+topics:
+  - some/topic/here

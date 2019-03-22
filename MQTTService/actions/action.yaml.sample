@@ -1,0 +1,3 @@
+topic: topic_to_trigger_action
+process: someprocess.exe
+arguments: -anarg -another arg
